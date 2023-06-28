@@ -1,10 +1,11 @@
 <script setup>
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
-import router from "@/router";
+
 import menuList from "@/Mocks/menu";
 
-
+const router = useRouter();
 const isLoggedIn = ref(false)
 let auth
 

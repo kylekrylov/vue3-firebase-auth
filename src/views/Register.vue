@@ -62,6 +62,7 @@ const singInWithGoogle = () => {
 				<div class="register__buttons">
 					<button
 						class="register__button button button-google"
+            disabled
 						@click="singInWithGoogle"
 					>
 						<AtomIconsGoogle/>
@@ -72,7 +73,6 @@ const singInWithGoogle = () => {
 						@click="singInWithGoogle"
 					>
 						<AtomIconsTelegram/>
-					
 					</button>
 				</div>
 			</div>
@@ -92,11 +92,6 @@ const singInWithGoogle = () => {
     gap: 8px;
   }
   
-  // .register__input
-  &__input {
-    width: 100%;
-  }
-  
   // .register__button
   &__button {
     width: 100%;
@@ -107,6 +102,11 @@ const singInWithGoogle = () => {
     }
   }
 }
+
+.register {
+  min-width: 280px;
+}
+
 
 .button-google {
   width: 40px;

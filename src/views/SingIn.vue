@@ -60,6 +60,7 @@ const singInWithGoogle = () => {
         <div class="register__buttons">
           <button
             class="register__button button button-google"
+            disabled
             @click="singInWithGoogle"
           >
             <AtomIconsGoogle/>
@@ -103,6 +104,10 @@ const singInWithGoogle = () => {
       height: 20px;
     }
   }
+}
+
+.register {
+  min-width: 280px;
 }
 
 .button-google {
