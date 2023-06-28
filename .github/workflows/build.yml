@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - main # Измените на имя вашей основной ветки
+      - main
 
 jobs:
   build:
@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          name: built-app
+          path: vue3-firebase-auth
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
