@@ -1,23 +1,49 @@
 <script setup>
 import { ref } from 'vue'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { useRouter } from "vue-router";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup
+} from 'firebase/auth'
 
 import Section from "@/components/Organisms/Section.vue";
+
 import AtomIconsGoogle from "@/components/Atoms/Icons/Google.vue"
 import AtomIconsTelegram from "@/components/Atoms/Icons/Telegram.vue"
 import AtomInput from "@/components/Atoms/Input.vue";
 
+const router = useRouter()
+
 const email = ref('')
 const password = ref('')
-
-const test = ref('test')
+const nameUser = ref('')
 
 const register = () => {
   const auth = getAuth()
-  createUserWithEmailAndPassword(auth, email.value, password.value)
-    .then((data) => {
-      console.log(auth.currentUser)
-      alert('Вы зарегистрированы')
+  const emailValue = email.value
+  const passwordValue = password.value
+  const nameUserValue = nameUser.value
+  
+  createUserWithEmailAndPassword(auth, emailValue, passwordValue)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      
+      if (nameUserValue) {
+        updateProfile(user, {
+          displayName: nameUserValue
+        })
+          .then(() => {
+            alert(`${nameUserValue}! Вы зарегистрированы`);
+          })
+          .catch((error) => {
+            console.log('Ошибка при обновлении профиля:', error);
+          });
+      } else {
+        alert('Вы зарегистрированы')
+      }
     })
     .catch((error) => {
       console.log(`
@@ -25,12 +51,18 @@ error: ${error.code}
 code: ${error.code}
 message: ${error.message}
 			`)
-      // alert(error.message)
     })
 }
 
 const singInWithGoogle = () => {
-
+  const provider = new GoogleAuthProvider()
+  signInWithPopup(getAuth(), provider)
+    .then((result) => {
+      router.push('/')
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }
 
 </script>
@@ -51,6 +83,11 @@ const singInWithGoogle = () => {
         placeholder="Password"
         v-model="password"
       />
+      <AtomInput
+        input-type="text"
+        placeholder="Name"
+        v-model="nameUser"
+      />
       <div>
         <button
           class="register__button button"
@@ -62,7 +99,6 @@ const singInWithGoogle = () => {
       <div class="register__buttons">
         <button
           class="register__button button button-google"
-          disabled
           @click="singInWithGoogle"
         >
           <AtomIconsGoogle/>

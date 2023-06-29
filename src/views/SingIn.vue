@@ -1,13 +1,14 @@
 <script setup>
 import { ref } from 'vue'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { useRouter } from "vue-router";
+import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 
 import AtomIconsGoogle from "@/components/Atoms/Icons/Google.vue"
 import AtomIconsTelegram from "@/components/Atoms/Icons/Telegram.vue"
 import AtomInput from "@/components/Atoms/Input.vue";
-import router from "@/router";
 import Section from "@/components/Organisms/Section.vue";
 
+const router = useRouter()
 const email = ref('')
 const password = ref('')
 
@@ -15,7 +16,6 @@ const signIn = () => {
   const auth = getAuth()
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((data) => {
-      console.log(auth.currentUser)
       router.push('/')
     })
     .catch((error) => {
@@ -28,7 +28,14 @@ message:"${error.message}"
 }
 
 const singInWithGoogle = () => {
-
+  const provider = new GoogleAuthProvider()
+  signInWithPopup(getAuth(), provider)
+    .then((result) => {
+      router.push('/')
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }
 
 </script>
@@ -60,7 +67,6 @@ const singInWithGoogle = () => {
         <div class="register__buttons">
           <button
             class="register__button button button-google"
-            disabled
             @click="singInWithGoogle"
           >
             <AtomIconsGoogle/>
@@ -82,6 +88,7 @@ const singInWithGoogle = () => {
 .register {
   display: grid;
   grid-gap: 20px;
+  min-width: 280px;
   
   &__buttons {
     display: flex;
@@ -103,10 +110,6 @@ const singInWithGoogle = () => {
       height: 20px;
     }
   }
-}
-
-.register {
-  min-width: 280px;
 }
 
 .button-google {

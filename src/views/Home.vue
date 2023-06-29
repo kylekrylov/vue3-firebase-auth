@@ -1,11 +1,26 @@
 <script setup>
 import Section from "@/components/Organisms/Section.vue";
+import { onMounted, ref } from "vue";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+let auth
+const userName = ref('')
+
+onMounted(() => {
+  auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    userName.value = user?.displayName;
+  })
+})
 </script>
 
 <template>
   <Section center>
-      <h1 class="title1">
-        Hello MF!
-      </h1>
+      <span
+        class="title1"
+        style="word-break: break-word;"
+      >
+        Hello, {{ userName || 'MF!' }} !
+      </span>
   </Section>
 </template>
