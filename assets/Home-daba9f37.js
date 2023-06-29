@@ -1,0 +1,1 @@
+import{S as e}from"./Section-b63f4535.js";import{o as t,c as o,w as a,a as s}from"./index-8e9a92fb.js";const c=s("h1",{class:"title1"}," Hello MF! ",-1),m={__name:"Home",setup(r){return(_,n)=>(t(),o(e,{center:""},{default:a(()=>[c]),_:1}))}};export{m as default};
