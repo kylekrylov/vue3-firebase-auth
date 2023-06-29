@@ -1,4 +1,4 @@
-import{_,r as c,o as p,c as g,w as m,a as t,b as s,g as b,d as v,p as h,e as f}from"./index-8e9a92fb.js";import{S as I}from"./Section-b63f4535.js";import{A as u,a as V,b as w}from"./Input-534610ac.js";const x=o=>(h("data-v-2150ae1f"),o=o(),f(),o),A=x(()=>t("h1",{class:"title1"}," Регистрация ",-1)),k={class:"register"},S={class:"register__buttons"},y={__name:"Register",setup(o){const a=c(""),l=c("");c("test");const i=()=>{const n=b();v(n,a.value,l.value).then(e=>{console.log(n.currentUser),alert("Вы зарегистрированы")}).catch(e=>{console.log(`
+import{_,r as c,o as p,c as g,w as m,a as t,b as s,g as b,d as v,p as h,e as f}from"./index-4dec2dfd.js";import{S as I}from"./Section-bdda72da.js";import{A as u,a as V,b as w}from"./Input-f4d3a947.js";const x=o=>(h("data-v-2150ae1f"),o=o(),f(),o),A=x(()=>t("h1",{class:"title1"}," Регистрация ",-1)),k={class:"register"},S={class:"register__buttons"},y={__name:"Register",setup(o){const a=c(""),l=c("");c("test");const i=()=>{const n=b();v(n,a.value,l.value).then(e=>{console.log(n.currentUser),alert("Вы зарегистрированы")}).catch(e=>{console.log(`
 error: ${e.code}
 code: ${e.code}
 message: ${e.message}
