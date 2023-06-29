@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 
+import Section from "@/components/Organisms/Section.vue";
 import AtomIconsGoogle from "@/components/Atoms/Icons/Google.vue"
 import AtomIconsTelegram from "@/components/Atoms/Icons/Telegram.vue"
 import AtomInput from "@/components/Atoms/Input.vue";
@@ -12,20 +13,20 @@ const password = ref('')
 const test = ref('test')
 
 const register = () => {
-	const auth = getAuth()
-	createUserWithEmailAndPassword(auth, email.value, password.value)
-		.then((data) => {
-			console.log(auth.currentUser)
-			alert('Вы зарегистрированы')
-		})
-		.catch((error) => {
-			console.log(`
+  const auth = getAuth()
+  createUserWithEmailAndPassword(auth, email.value, password.value)
+    .then((data) => {
+      console.log(auth.currentUser)
+      alert('Вы зарегистрированы')
+    })
+    .catch((error) => {
+      console.log(`
 error: ${error.code}
 code: ${error.code}
 message: ${error.message}
 			`)
-			// alert(error.message)
-		})
+      // alert(error.message)
+    })
 }
 
 const singInWithGoogle = () => {
@@ -35,49 +36,47 @@ const singInWithGoogle = () => {
 </script>
 
 <template>
-	<section class="section section--center">
-		<div class="section__container container">
-      <h1 class="title1">
-        Регистрация
-			</h1>
-			<div class="register">
-				<AtomInput
-					type="text"
-					placeholder="Email"
-					v-model="email"
-				/>
-				<AtomInput
-					type="password"
-					placeholder="Password"
-					v-model="password"
-				/>
-				<div>
-					<button
-						class="register__button button"
-						@click="register"
-					>
-						Register
-					</button>
-				</div>
-				<div class="register__buttons">
-					<button
-						class="register__button button button-google"
-            disabled
-						@click="singInWithGoogle"
-					>
-						<AtomIconsGoogle/>
-					</button>
-					<button
-						class="register__button button button-google"
-						disabled
-						@click="singInWithGoogle"
-					>
-						<AtomIconsTelegram/>
-					</button>
-				</div>
-			</div>
-		</div>
-	</section>
+  <Section center>
+    <h1 class="title1">
+      Регистрация
+    </h1>
+    <div class="register">
+      <AtomInput
+        input-type="text"
+        placeholder="Email"
+        v-model="email"
+      />
+      <AtomInput
+        input-type="password"
+        placeholder="Password"
+        v-model="password"
+      />
+      <div>
+        <button
+          class="register__button button"
+          @click="register"
+        >
+          Register
+        </button>
+      </div>
+      <div class="register__buttons">
+        <button
+          class="register__button button button-google"
+          disabled
+          @click="singInWithGoogle"
+        >
+          <AtomIconsGoogle/>
+        </button>
+        <button
+          class="register__button button button-google"
+          disabled
+          @click="singInWithGoogle"
+        >
+          <AtomIconsTelegram/>
+        </button>
+      </div>
+    </div>
+  </Section>
 </template>
 
 <style scoped lang="scss">
@@ -106,7 +105,6 @@ const singInWithGoogle = () => {
 .register {
   min-width: 280px;
 }
-
 
 .button-google {
   width: 40px;

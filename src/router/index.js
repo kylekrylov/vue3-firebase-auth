@@ -3,6 +3,7 @@ import { getAuth } from "firebase/auth";
 
 
 const router = createRouter({
+    mode: 'history',
     history: createWebHistory('/vue3-firebase-auth/'),
     routes: [
         {
@@ -10,7 +11,8 @@ const router = createRouter({
             component: () => import('../views/Home.vue')
         },
         {
-            path: '/register', component: () => import('../views/Register.vue'),
+            path: '/register',
+            component: () => import('../views/Register.vue'),
             meta: {
                 requiresAuth: false
             }
@@ -32,16 +34,17 @@ const router = createRouter({
     ]
 })
 
-router.beforeEach((to, from, next) => {
-    if (to.matched.some((record) => record.meta.requiresAuth)) {
-        if (getAuth().currentUser) {
-            next()
-        } else {
-            next('/')
-        }
-    } else {
-        next()
-    }
+router.beforeEach(async (to, from, next) => {
+
+    const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+    const isAuthenticated = await new Promise((resolve) => {
+        const unsubscribe = getAuth().onAuthStateChanged((user) => {
+            resolve(user !== null);
+            unsubscribe();
+        });
+    });
+
+    requiresAuth && !isAuthenticated ? next('/') : next();
 })
 
 export default router

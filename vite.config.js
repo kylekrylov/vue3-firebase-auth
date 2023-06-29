@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
+  // base: '/vue3-firebase-auth',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

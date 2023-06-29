@@ -62,16 +62,3 @@ a,
   display: grid;
 }
 
-.section {
-  display: flex;
-
-  &--center {
-    align-self: center;
-    justify-self: center;
-  }
-
-  // .section__container
-  &__container {
-
-  }
-}

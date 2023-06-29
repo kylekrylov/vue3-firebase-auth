@@ -19,6 +19,8 @@
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+
+
 }
 
 /* semantic color variables for this project */
@@ -37,6 +39,17 @@
   --color-text-input: var(--vt-c-text-dark-1);
 
   --section-gap: 160px;
+
+  --primary: #ff9640ff;
+  --business: #3cc;
+  --personal: var(--primary);
+  --light: #eee;
+  --grey: #888;
+  --dark: #313154;
+  --danger: #ff5b57;
+  --personal-glow: 0 0 4px rgb(255 150 64 / 75%);
+  --shadow: 0 1px 3px rgb(0 0 0 / 10%);
+  --business-glow: rgb(51 204 204 / 75%);
 }
 
 @media (prefers-color-scheme: dark) {

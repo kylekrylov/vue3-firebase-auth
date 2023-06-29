@@ -6,6 +6,7 @@ import AtomIconsGoogle from "@/components/Atoms/Icons/Google.vue"
 import AtomIconsTelegram from "@/components/Atoms/Icons/Telegram.vue"
 import AtomInput from "@/components/Atoms/Input.vue";
 import router from "@/router";
+import Section from "@/components/Organisms/Section.vue";
 
 const email = ref('')
 const password = ref('')
@@ -33,19 +34,18 @@ const singInWithGoogle = () => {
 </script>
 
 <template>
-  <section class="section section--center">
-    <div class="section__container container">
+  <Section center>
       <h1 class="title1">
         Войти
       </h1>
       <div class="register">
         <AtomInput
-          type="text"
+          input-type="text"
           placeholder="Email"
           v-model="email"
         />
         <AtomInput
-          type="password"
+          input-type="password"
           placeholder="Password"
           v-model="password"
         />
@@ -74,8 +74,7 @@ const singInWithGoogle = () => {
           </button>
         </div>
       </div>
-    </div>
-  </section>
+  </Section>
 </template>
 
 <style scoped lang="scss">

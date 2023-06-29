@@ -27,33 +27,34 @@ const handleSignOut = () => {
 <template>
   <header class="header">
     <div class="header__container container">
-      
       <nav class="header__nav">
         <RouterLink
           v-for="menuItem in menuList"
           :to="menuItem.url"
           class="header__nav-item"
-          :class="isLoggedIn ? '' : '--lock'"
         >
+<!--          :class="isLoggedIn ? '' : '&#45;&#45;lock'"-->
           {{ menuItem.title }}
         </RouterLink>
       </nav>
       
-      <div class="header__auth">
+      <div class="header__auth header-auth">
         <RouterLink
+          class="header-auth__link"
           v-if="!isLoggedIn"
           to="/register"
         >
           Register
         </RouterLink>
         <RouterLink
+          class="header-auth__link"
           v-if="!isLoggedIn"
           to="/sing-in"
         >
-          SingIn
+          Sing In
         </RouterLink>
         <a
-          class="link"
+          class="header-auth__link link"
           v-if="isLoggedIn"
           @click.prevent="handleSignOut"
         >
@@ -94,10 +95,16 @@ const handleSignOut = () => {
       pointer-events: none;
     }
   }
-  
-  // .header__
-  &__auth {
-  
+}
+
+// .header-auth
+.header-auth {
+  // .header-auth__link
+  &__link {
+
+    &:not(:first-child) {
+      margin-left: 8px;
+    }
   }
 }
 </style>
