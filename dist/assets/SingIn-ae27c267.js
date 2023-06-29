@@ -1,4 +1,4 @@
-import{_ as g,u as m,r as d,b as h,c as b,w as v,d as e,e as a,g as i,j as I,G as f,s as w,p as S,i as V}from"./index-8300ca3f.js";import{A as r,a as A,b as x}from"./Input-1fa9e89c.js";import{S as k}from"./Section-74d785ce.js";const y=o=>(S("data-v-101df6ca"),o=o(),V(),o),C=y(()=>e("h1",{class:"title1"}," Войти ",-1)),G={class:"register"},P={class:"register__buttons"},B={__name:"SingIn",setup(o){const c=m(),n=d(""),l=d(""),p=()=>{const s=i();I(s,n.value,l.value).then(t=>{c.push("/")}).catch(t=>{console.log(`
+import{_ as g,u as m,r as d,b as h,c as b,w as v,d as e,e as a,g as i,j as I,G as f,s as w,p as S,i as V}from"./index-ad83b4fc.js";import{A as r,a as A,b as x}from"./Input-0d75edd8.js";import{S as k}from"./Section-28f18900.js";const y=o=>(S("data-v-101df6ca"),o=o(),V(),o),C=y(()=>e("h1",{class:"title1"}," Войти ",-1)),G={class:"register"},P={class:"register__buttons"},B={__name:"SingIn",setup(o){const c=m(),n=d(""),l=d(""),p=()=>{const s=i();I(s,n.value,l.value).then(t=>{c.push("/")}).catch(t=>{console.log(`
 error: "${t.code}"
 code: "${t.code}"
 message:"${t.message}"
