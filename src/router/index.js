@@ -4,7 +4,7 @@ import { getAuth } from "firebase/auth";
 
 const router = createRouter({
     // mode: 'history',
-    history: createWebHistory(),
+    history: createWebHistory('/vue3-firebase-auth/'),
     routes: [
         {
             path: '/',
