@@ -20,7 +20,7 @@ onMounted(() => {
         class="title1"
         style="word-break: break-word;"
       >
-        Hello, {{ userName || 'MF!' }} !
+        Hello, {{ userName || 'MF' }}!
       </span>
   </Section>
 </template>

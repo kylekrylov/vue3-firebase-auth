@@ -5,6 +5,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 const router = createRouter({
     // mode: 'history',
     history: createWebHistory('/vue3-firebase-auth/'),
+    linkActiveClass: "--active",
+    linkExactActiveClass: "--exact-active",
     routes: [
         {
             path: '/',
@@ -27,6 +29,13 @@ const router = createRouter({
         {
             path: '/list',
             component: () => import('../views/List.vue'),
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/fetch',
+            component: () => import('../views/Fetch.vue'),
             meta: {
                 requiresAuth: true
             }

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 
@@ -16,6 +16,10 @@ onMounted(() => {
   })
 })
 
+const filteredMenu = computed(() => {
+  return isLoggedIn.value ? menuList : [menuList[0]]
+});
+
 const handleSignOut = () => {
   signOut(auth).then(() => {
     router.push('/')
@@ -29,15 +33,14 @@ const handleSignOut = () => {
     <div class="header__container container">
       <nav class="header__nav">
         <RouterLink
-          v-for="menuItem in menuList"
+          v-for="menuItem in filteredMenu"
           :to="menuItem.url"
           class="header__nav-item"
         >
-<!--          :class="isLoggedIn ? '' : '&#45;&#45;lock'"-->
           {{ menuItem.title }}
         </RouterLink>
       </nav>
-      
+     
       <div class="header__auth header-auth">
         <RouterLink
           class="header-auth__link"
@@ -94,6 +97,9 @@ const handleSignOut = () => {
       opacity: .5;
       pointer-events: none;
     }
+    &.--active {
+      border-bottom: 1px solid #00bd7e;
+    }
   }
 }
 
@@ -101,7 +107,7 @@ const handleSignOut = () => {
 .header-auth {
   // .header-auth__link
   &__link {
-
+    
     &:not(:first-child) {
       margin-left: 8px;
     }
