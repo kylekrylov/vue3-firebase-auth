@@ -1,31 +1,37 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+import { computed, ref } from 'vue'
+import { useAuthStore } from '@/store/auth'
+import { storeToRefs } from "pinia";
+import menuList from "@/mocks/menu";
 
-import menuList from "@/Mocks/menu";
+import { onClickOutside } from '@vueuse/core'
 
-const router = useRouter();
-const isLoggedIn = ref(false)
-let auth
+const userBlock = ref(null)
 
-onMounted(() => {
-  auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    isLoggedIn.value = !!user
-  })
-})
+onClickOutside(userBlock, (event) => closeUserMenu())
+
+const authStore = useAuthStore()
+const {isLoggedIn, userAuth} = storeToRefs(authStore)
+const {handleSignOut} = authStore
+const activeUserMenu = ref(false)
+
+const toggleUserMenu = () => {
+  activeUserMenu.value = !activeUserMenu.value
+}
+const closeUserMenu = () => {
+  activeUserMenu.value = false
+}
 
 const filteredMenu = computed(() => {
   return isLoggedIn.value ? menuList : [menuList[0]]
 });
 
-const handleSignOut = () => {
-  signOut(auth).then(() => {
-    router.push('/')
-    console.log('Всё, вы не авторизованы')
-  })
-}
+
+const altUserImage = computed(async () => {
+  const name = !userAuth ? userAuth.name[0].toUpperCase() : ''
+  return name
+})
+
 </script>
 
 <template>
@@ -40,29 +46,62 @@ const handleSignOut = () => {
           {{ menuItem.title }}
         </RouterLink>
       </nav>
-     
-      <div class="header__auth header-auth">
-        <RouterLink
-          class="header-auth__link"
+      
+      <div class="header__user header-user">
+        <div
           v-if="!isLoggedIn"
-          to="/register"
+          class="header-auth"
         >
-          Register
-        </RouterLink>
-        <RouterLink
-          class="header-auth__link"
-          v-if="!isLoggedIn"
-          to="/sing-in"
-        >
-          Sing In
-        </RouterLink>
-        <a
-          class="header-auth__link link"
+          <RouterLink
+            class="link"
+            to="/register"
+          >
+            Register
+          </RouterLink>
+          <RouterLink
+            class="link"
+            to="/sing-in"
+          >
+            Sing In
+          </RouterLink>
+        </div>
+        <div
           v-if="isLoggedIn"
-          @click.prevent="handleSignOut"
+          ref="userBlock"
+          :class="{'--active' : activeUserMenu }"
+          class="header-user__block"
+          @click="toggleUserMenu"
         >
-          Выйти
-        </a>
+          <div class="header-user__avatar">
+            <img
+              v-if="userAuth.photo"
+              class="header-user__image"
+              :src="userAuth.photo"
+              alt="avatar"
+            >
+            <span v-else>
+              {{ altUserImage }}
+            </span>
+          </div>
+          <ul class="header-user__drop-list">
+            <li class="header-user__drop-item">
+              <RouterLink
+                class="header-user__drop-link link"
+                to="/profile"
+              >
+                Профиль
+              </RouterLink>
+            </li>
+            <li class="header-user__drop-item">
+              <a
+                class="header-user__drop-link link"
+                @click.prevent="handleSignOut"
+              >
+                Выйти
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </header>
@@ -79,6 +118,7 @@ const handleSignOut = () => {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-height: 60px;
   }
   
   // header__nav
@@ -97,9 +137,86 @@ const handleSignOut = () => {
       opacity: .5;
       pointer-events: none;
     }
+    
     &.--active {
-      border-bottom: 1px solid #00bd7e;
+      border-bottom: 1px solid var(--c-active);
     }
+  }
+}
+
+// .header-user
+.header-user {
+  --size: 40px;
+  
+  // .header-user__block
+  &__block {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    
+    &:before {
+      position: absolute;
+      border: 2px solid var(--c-active-glow);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity .2s ease-out;
+      content: '';
+      pointer-events: none;
+      inset: 0;
+    }
+    
+    &:hover,
+    &.--active {
+      &:before {
+        opacity: 1;
+      }
+      
+      // .header-user__block:hover .header-user__drop-list
+      .header-user {
+        &__drop-list {
+          opacity: 1;
+          transform: translateX(0px);
+          pointer-events: visible;
+        }
+      }
+    }
+  }
+  
+  // .header-user__avatar
+  &__avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--size);
+    height: var(--size);
+    background: var(--c-active);
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--color-const-white);
+    overflow: hidden;
+  }
+  
+  // .header-user__drop-list
+  &__drop-list {
+    position: absolute;;
+    top: 100%;
+    right: -12px;
+    opacity: 0;
+    transform: translateX(8px);
+    transition: opacity .2s ease-out,
+    transform .2s ease-out;
+    pointer-events: none;
+    
+    //.header-user__block
+  }
+  
+  // .header-user__drop-link
+  &__drop-link {
+    display: flex;
+    justify-content: flex-end;
+    padding: 4px 12px;
+    
   }
 }
 

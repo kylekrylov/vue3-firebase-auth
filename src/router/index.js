@@ -34,8 +34,8 @@ const router = createRouter({
             }
         },
         {
-            path: '/fetch',
-            component: () => import('../views/Fetch.vue'),
+            path: '/profile',
+            component: () => import('../views/Profile.vue'),
             meta: {
                 requiresAuth: true
             }

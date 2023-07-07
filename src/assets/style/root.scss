@@ -25,6 +25,7 @@
 
 /* semantic color variables for this project */
 :root {
+  --color-const-white: var(--vt-c-white);
   --color-background: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
@@ -38,10 +39,9 @@
   --color-text: var(--vt-c-text-light-1);
   --color-text-input: var(--vt-c-text-dark-1);
 
-  --section-gap: 160px;
-
   --primary: #ff9640ff;
-  --business: #3cc;
+  --c-active: #00bd7e;
+  --c-active-glow: #00BD7EBF;
   --personal: var(--primary);
   --light: #eee;
   --grey: #888;
@@ -49,7 +49,8 @@
   --danger: #ff5b57;
   --personal-glow: 0 0 4px rgb(255 150 64 / 75%);
   --shadow: 0 1px 3px rgb(0 0 0 / 10%);
-  --business-glow: rgb(51 204 204 / 75%);
+
+  --section-gap: 160px;
 }
 
 @media (prefers-color-scheme: dark) {

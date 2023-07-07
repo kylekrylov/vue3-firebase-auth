@@ -177,16 +177,16 @@ onMounted(() => {
   align-items: center;
   width: 20px;
   height: 20px;
-  box-shadow: 0 0 6px var(--business-glow);
-  border: 2px solid var(--business);
+  box-shadow: 0 0 6px var(--c-active-glow);
+  border: 2px solid var(--c-active);
   border-radius: 50%;
   
   &::after {
     display: block;
     width: 0;
     height: 0;
-    box-shadow: 0 0 6px var(--business-glow);
-    background-color: var(--business);
+    box-shadow: 0 0 6px var(--c-active-glow);
+    background-color: var(--c-active);
     border-radius: 50%;
     opacity: 0;
     transition: 0.2s ease-in-out;

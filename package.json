@@ -8,7 +8,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/core": "^10.2.1",
     "firebase": "^9.23.0",
+    "pinia": "^2.1.4",
     "sass": "^1.63.6",
     "vue": "^3.3.4",
     "vue-router": "^4.2.2"
