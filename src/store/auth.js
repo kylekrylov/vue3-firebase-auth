@@ -23,9 +23,21 @@ export const useAuthStore = defineStore('authorization', () => {
     })
     const userAuthName = ref('')
 
+    const checkAuth = () => {
+        console.log(isLoggedIn,auth,userAuth)
+    }
     const onAuthState = () => {
         onAuthStateChanged(auth, (user) => {
-            if (!user) return
+            if (!user) {
+                isLoggedIn.value = !user
+
+                userAuthName.value = '';
+                userAuth.name = '';
+                userAuth.photo = '';
+                userAuth.mail = '';
+                userAuth.meta.creation = '';
+                userAuth.meta.lastSign = '';
+            }
 
             isLoggedIn.value = !!user
 
@@ -62,6 +74,7 @@ export const useAuthStore = defineStore('authorization', () => {
         userAuth,
         userAuthName,
         onAuthState,
-        handleSignOut
+        handleSignOut,
+        checkAuth
     }
 })
