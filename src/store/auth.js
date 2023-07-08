@@ -2,8 +2,6 @@ import { defineStore } from "pinia";
 
 import { onMounted, reactive, ref } from "vue";
 
-import { useRouter } from "vue-router";
-const router = useRouter();
 import {
     getAuth,
     signOut,

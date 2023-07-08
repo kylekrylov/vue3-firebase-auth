@@ -1,19 +1,23 @@
 <script setup>
 import menuList from "@/mocks/menu";
+import AtomsIconsAlien from "@/components/Atoms/Icons/Alien.vue";
 
 import { computed, ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
+import { useRouter } from "vue-router";
+const router = useRouter();
+
 import { useAuthStore } from '@/store/auth'
 import { storeToRefs } from "pinia";
-import { onClickOutside } from '@vueuse/core'
+const authStore = useAuthStore()
+const {isLoggedIn, userAuth, userAuthName} = storeToRefs(authStore)
+const {onAuthState} = authStore
 
-import AtomsIconsAlien from "@/components/Atoms/Icons/Alien.vue";
+import { getAuth, signOut } from "firebase/auth";
+const auth = getAuth();
 
 const userBlock = ref(null)
 onClickOutside(userBlock, (event) => closeUserMenu())
-
-const authStore = useAuthStore()
-const {isLoggedIn, userAuth, userAuthName} = storeToRefs(authStore)
-const {handleSignOut, onAuthState} = authStore
 
 const activeUserMenu = ref(false)
 
@@ -33,6 +37,20 @@ const altUserImage = computed(() => {
   if (!userAuthName.value) return
   return userAuthName.value[0].toUpperCase()
 })
+
+const handleSignOut = () => {
+  signOut(auth)
+    .then(() => {
+      console.log('Всё, вы не авторизованы')
+      router.push('/')
+    })
+    .catch(() => {
+      console.log('что-то пошло не так c signOut()')
+    })
+    .finally(()=> {
+      onAuthState()
+    })
+}
 
 
 </script>
@@ -54,11 +72,10 @@ const altUserImage = computed(() => {
         <div
           ref="userBlock"
           :class="{'--active' : activeUserMenu }"
-          class="header-user__block"
+          class="header-user__body"
           @click="toggleUserMenu"
         >
           <div class="header-user__avatar">
-            
             <template v-if="isLoggedIn">
               <img
                 v-if="userAuth.photo"
@@ -71,7 +88,7 @@ const altUserImage = computed(() => {
               </span>
             </template>
             
-            <AtomsIconsAlien else/>
+            <AtomsIconsAlien v-else/>
           </div>
           <ul class="header-user__drop-list">
             <template v-if="isLoggedIn">
@@ -159,8 +176,8 @@ const altUserImage = computed(() => {
 .header-user {
   --size: 40px;
   
-  // .header-user__block
-  &__block {
+  // .header-user__body
+  &__body {
     position: relative;
     display: flex;
     align-items: center;
@@ -183,7 +200,7 @@ const altUserImage = computed(() => {
         opacity: 1;
       }
       
-      // .header-user__block:hover .header-user__drop-list
+      // .header-user__body:hover .header-user__drop-list
       .header-user {
         &__drop-list {
           opacity: 1;
