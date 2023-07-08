@@ -1,56 +1,58 @@
 <script setup>
-import { ref } from 'vue'
+import { reactive } from 'vue'
 import { useRouter } from "vue-router";
 import {
   getAuth,
-  createUserWithEmailAndPassword,
   updateProfile,
+  signInWithPopup,
   GoogleAuthProvider,
-  signInWithPopup
+  createUserWithEmailAndPassword
 } from 'firebase/auth'
+import { useAuthStore } from '@/store/auth'
+import { storeToRefs } from "pinia";
 
-import Section from "@/components/Organisms/Section.vue";
-
+/* components */
+import OrganismsSection from "@/components/Organisms/Section.vue";
 import AtomIconsGoogle from "@/components/Atoms/Icons/Google.vue"
 import AtomIconsTelegram from "@/components/Atoms/Icons/Telegram.vue"
 import AtomInput from "@/components/Atoms/Input.vue";
 
+const authStore = useAuthStore()
+const {userAuth} = storeToRefs(authStore)
+const {onAuthState} = authStore
+
 const router = useRouter()
 
-const email = ref('')
-const password = ref('')
-const nameUser = ref('')
+const user = reactive({
+  email: '',
+  password: '',
+  name: '',
+})
 
 const register = () => {
   const auth = getAuth()
-  const emailValue = email.value
-  const passwordValue = password.value
-  const nameUserValue = nameUser.value
-  
-  createUserWithEmailAndPassword(auth, emailValue, passwordValue)
+  createUserWithEmailAndPassword(auth, user.email, user.password)
     .then((userCredential) => {
-      const user = userCredential.user;
+      const createUser = userCredential.user;
+      userAuth.name = user.name
       
-      if (nameUserValue) {
-        updateProfile(user, {
-          displayName: nameUserValue
+      if (userAuth.name) {
+        updateProfile(createUser, {
+          displayName: userAuth.name
         })
           .then(() => {
-            alert(`${nameUserValue}! Вы зарегистрированы`);
+            console.log(`Ваш ник ${userAuth.name}!`);
           })
           .catch((error) => {
             console.log('Ошибка при обновлении профиля:', error);
           });
-      } else {
-        alert('Вы зарегистрированы')
       }
+      alert(`${userAuth.name} Вы зарегистрированы!`)
+      onAuthState()
+      router.push('/')
     })
     .catch((error) => {
-      console.log(`
-error: ${error.code}
-code: ${error.code}
-message: ${error.message}
-			`)
+      console.log(`error: ${error.code}`)
     })
 }
 
@@ -68,7 +70,7 @@ const singInWithGoogle = () => {
 </script>
 
 <template>
-  <Section center>
+  <OrganismsSection center>
     <h1 class="title1">
       Регистрация
     </h1>
@@ -76,17 +78,17 @@ const singInWithGoogle = () => {
       <AtomInput
         input-type="text"
         placeholder="Email"
-        v-model="email"
+        v-model="user.email"
       />
       <AtomInput
         input-type="password"
         placeholder="Password"
-        v-model="password"
+        v-model="user.password"
       />
       <AtomInput
         input-type="text"
         placeholder="Name"
-        v-model="nameUser"
+        v-model="user.name"
       />
       <div>
         <button
@@ -112,7 +114,7 @@ const singInWithGoogle = () => {
         </button>
       </div>
     </div>
-  </Section>
+  </OrganismsSection>
 </template>
 
 <style scoped lang="scss">

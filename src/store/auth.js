@@ -1,15 +1,19 @@
 import { defineStore } from "pinia";
 
-import { computed, onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 
-const router = useRouter();
 import { useRouter } from "vue-router";
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+const router = useRouter();
+import {
+    getAuth,
+    signOut,
+    onAuthStateChanged,
+} from 'firebase/auth'
 
 export const useAuthStore = defineStore('authorization', () => {
-    const router = useRouter();
     const isLoggedIn = ref(false)
     const auth = getAuth();
+
     const userAuth = reactive({
         photo: '',
         name: '',
@@ -19,34 +23,47 @@ export const useAuthStore = defineStore('authorization', () => {
             lastSign: '',
         }
     })
+    const userAuthName = ref('')
+
+    const onAuthState = () => {
+        onAuthStateChanged(auth, (user) => {
+            if (!user) return
+
+            isLoggedIn.value = !!user
+
+            userAuthName.value = user?.displayName;
+            userAuth.name = user?.displayName;
+            userAuth.photo = user?.photoURL;
+            userAuth.mail = user?.email;
+            userAuth.meta.creation = user?.metadata?.creationTime;
+            userAuth.meta.lastSign = user?.metadata?.lastSignInTime;
+        })
+    }
 
     onMounted(() => {
-        onAuthStateChanged(auth, (user) => {
-            isLoggedIn.value = !!user
-            userAuth.name = user.displayName
-            userAuth.photo = user.photoURL
-            userAuth.mail = user.email
-            userAuth.meta.creation = user.metadata.creationTime
-            userAuth.meta.lastSign = user.metadata.lastSignInTime
-            console.log(user)
-            console.log(userAuth)
-        })
+        onAuthState()
     })
+
 
     const handleSignOut = () => {
         signOut(auth)
             .then(() => {
-                router.push('/')
                 console.log('Всё, вы не авторизованы')
+                // router.push('/')
             })
             .catch(() => {
                 console.log('что-то пошло не так c signOut()')
+            })
+            .finally(()=> {
+                onAuthState()
             })
     }
 
     return {
         isLoggedIn,
         userAuth,
-        handleSignOut,
+        userAuthName,
+        onAuthState,
+        handleSignOut
     }
 })

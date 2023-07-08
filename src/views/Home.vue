@@ -1,17 +1,33 @@
 <script setup>
 import Section from "@/components/Organisms/Section.vue";
-import { onMounted, ref } from "vue";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { computed, onMounted, ref } from "vue";
+import { useAuthStore } from "@/store/auth";
+import { storeToRefs } from "pinia";
 
-let auth
+const authStore = useAuthStore()
+const {userAuthName} = storeToRefs(authStore)
+
 const userName = ref('')
 
+const checkAuth = () => {
+  if (!userAuthName.value) return
+  userName.value = userAuthName.value
+  console.log(userName.value)
+}
+
 onMounted(() => {
-  auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    userName.value = user?.displayName;
-  })
+  checkAuth()
 })
+
+const welcomeText = computed((name) => {
+  if (userAuthName.value) return `Hello, ${userAuthName.value}!`
+  
+  const array = ["dude", "mate", "pal", "buddy", "bro", "amigo", "comrade"]
+  const userName = array[Math.floor(Math.random() * array.length)]
+  
+  return `Hello, ${userName}!`
+})
+
 </script>
 
 <template>
@@ -20,7 +36,7 @@ onMounted(() => {
         class="title1"
         style="word-break: break-word;"
       >
-        Hello, {{ userName || 'MF' }}!
+        {{ welcomeText }}
       </span>
   </Section>
 </template>

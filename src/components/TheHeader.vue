@@ -1,18 +1,20 @@
 <script setup>
+import menuList from "@/mocks/menu";
+
 import { computed, ref } from 'vue'
 import { useAuthStore } from '@/store/auth'
 import { storeToRefs } from "pinia";
-import menuList from "@/mocks/menu";
-
 import { onClickOutside } from '@vueuse/core'
 
-const userBlock = ref(null)
+import AtomsIconsAlien from "@/components/Atoms/Icons/Alien.vue";
 
+const userBlock = ref(null)
 onClickOutside(userBlock, (event) => closeUserMenu())
 
 const authStore = useAuthStore()
-const {isLoggedIn, userAuth} = storeToRefs(authStore)
-const {handleSignOut} = authStore
+const {isLoggedIn, userAuth, userAuthName} = storeToRefs(authStore)
+const {handleSignOut, onAuthState} = authStore
+
 const activeUserMenu = ref(false)
 
 const toggleUserMenu = () => {
@@ -20,17 +22,18 @@ const toggleUserMenu = () => {
 }
 const closeUserMenu = () => {
   activeUserMenu.value = false
+  onAuthState()
 }
 
 const filteredMenu = computed(() => {
   return isLoggedIn.value ? menuList : [menuList[0]]
 });
 
-
-const altUserImage = computed(async () => {
-  const name = !userAuth ? userAuth.name[0].toUpperCase() : ''
-  return name
+const altUserImage = computed(() => {
+  if (!userAuthName.value) return
+  return userAuthName.value[0].toUpperCase()
 })
+
 
 </script>
 
@@ -49,47 +52,36 @@ const altUserImage = computed(async () => {
       
       <div class="header__user header-user">
         <div
-          v-if="!isLoggedIn"
-          class="header-auth"
-        >
-          <RouterLink
-            class="link"
-            to="/register"
-          >
-            Register
-          </RouterLink>
-          <RouterLink
-            class="link"
-            to="/sing-in"
-          >
-            Sing In
-          </RouterLink>
-        </div>
-        <div
-          v-if="isLoggedIn"
           ref="userBlock"
           :class="{'--active' : activeUserMenu }"
           class="header-user__block"
           @click="toggleUserMenu"
         >
           <div class="header-user__avatar">
-            <img
-              v-if="userAuth.photo"
-              class="header-user__image"
-              :src="userAuth.photo"
-              alt="avatar"
-            >
-            <span v-else>
-              {{ altUserImage }}
-            </span>
+            
+            <template v-if="isLoggedIn">
+              <img
+                v-if="userAuth.photo"
+                class="header-user__image"
+                :src="userAuth.photo"
+                alt="avatar"
+              >
+              <span v-else style="font-weight: bold">
+                {{ altUserImage }}
+              </span>
+            </template>
+            
+            <AtomsIconsAlien else/>
           </div>
           <ul class="header-user__drop-list">
+            <template v-if="isLoggedIn">
+            
             <li class="header-user__drop-item">
               <RouterLink
                 class="header-user__drop-link link"
                 to="/profile"
               >
-                Профиль
+                Profile
               </RouterLink>
             </li>
             <li class="header-user__drop-item">
@@ -97,9 +89,28 @@ const altUserImage = computed(async () => {
                 class="header-user__drop-link link"
                 @click.prevent="handleSignOut"
               >
-                Выйти
+                Log out
               </a>
             </li>
+            </template>
+            <template v-else>
+              <li class="header-user__drop-item">
+                <RouterLink
+                  class="header-user__drop-link link"
+                  to="/register"
+                >
+                  Register
+                </RouterLink>
+              </li>
+              <li class="header-user__drop-item">
+                <RouterLink
+                  class="header-user__drop-link link"
+                  to="/sing-in"
+                >
+                  Sing In
+                </RouterLink>
+              </li>
+            </template>
           </ul>
         </div>
       </div>
@@ -204,11 +215,9 @@ const altUserImage = computed(async () => {
     right: -12px;
     opacity: 0;
     transform: translateX(8px);
-    transition: opacity .2s ease-out,
-    transform .2s ease-out;
+    transition: opacity .2s ease-out .2s,
+    transform .2s ease-out .2s;
     pointer-events: none;
-    
-    //.header-user__block
   }
   
   // .header-user__drop-link
@@ -216,18 +225,14 @@ const altUserImage = computed(async () => {
     display: flex;
     justify-content: flex-end;
     padding: 4px 12px;
-    
+    white-space: nowrap;
   }
 }
 
-// .header-auth
-.header-auth {
-  // .header-auth__link
-  &__link {
-    
-    &:not(:first-child) {
-      margin-left: 8px;
-    }
-  }
+.svg {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  fill: white;
 }
 </style>
