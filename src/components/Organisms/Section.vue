@@ -28,6 +28,7 @@ const sectionClass = computed(() => {
 
 .section {
   display: flex;
+  width: 100%;
   
   // .section--center
   &--center {
@@ -37,7 +38,9 @@ const sectionClass = computed(() => {
   
   // .section__container
   &__container {
-  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 </style>

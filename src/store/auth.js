@@ -56,7 +56,7 @@ export const useAuthStore = defineStore('authorization', () => {
 
 
     const handleSignOut = () => {
-        signOut(auth)
+         (auth)
             .then(() => {
                 console.log('Всё, вы не авторизованы')
                 // router.push('/')
