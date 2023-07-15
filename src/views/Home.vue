@@ -12,7 +12,6 @@ const userName = ref('')
 const checkAuth = () => {
   if (!userAuthName.value) return
   userName.value = userAuthName.value
-  console.log(userName.value)
 }
 
 onMounted(() => {
@@ -20,9 +19,9 @@ onMounted(() => {
 })
 
 const welcomeText = computed((name) => {
-  if (userAuthName.value) return `Hello, ${userAuthName.value}!`
+  if (userAuthName.value)  `Hello, ${userAuthName.value}!`
   
-  const array = ["dude", "mate", "pal", "buddy", "bro", "amigo", "comrade"]
+  const array = ["dude", "mate", "pal", "buddy", "bro", "amigo", "comrade", "buddy", "friend"]
   const userName = array[Math.floor(Math.random() * array.length)]
   
   return `Hello, ${userName}!`

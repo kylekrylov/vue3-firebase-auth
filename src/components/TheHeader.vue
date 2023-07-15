@@ -35,14 +35,19 @@ const filteredMenu = computed(() => {
   return isLoggedIn.value ? menuList : [menuList[0]]
 });
 
+const getFirstLetters = (str) => {
+  const words = str.trim().split(/[^a-zA-Zа-яА-Я]+/).filter(Boolean);
+  const firstLetters = words.map(word => word.charAt(0));
+  
+  return firstLetters;
+}
 
 const altUserImage = computed(() => {
   if (!userAuthName.value) return
   
-  const arr = userAuthName.value.replace(/\s/g, "").split("");
+  const avatarFirstLetters = getFirstLetters(userAuthName.value).join('').toUpperCase()
   
-  console.log(arr)
-  return userAuthName.value[0].toUpperCase()
+  return avatarFirstLetters
 })
 
 const handleSignOut = () => {

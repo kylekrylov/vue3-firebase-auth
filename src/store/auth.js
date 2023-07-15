@@ -23,9 +23,6 @@ export const useAuthStore = defineStore('authorization', () => {
     })
     const userAuthName = ref('')
 
-    const checkAuth = () => {
-        console.log(isLoggedIn,auth,userAuth)
-    }
     const onAuthState = () => {
         onAuthStateChanged(auth, (user) => {
             if (!user) {
@@ -56,15 +53,14 @@ export const useAuthStore = defineStore('authorization', () => {
 
 
     const handleSignOut = () => {
-         (auth)
+        signOut(auth)
             .then(() => {
                 console.log('Всё, вы не авторизованы')
-                // router.push('/')
             })
             .catch(() => {
                 console.log('что-то пошло не так c signOut()')
             })
-            .finally(()=> {
+            .finally(() => {
                 onAuthState()
             })
     }
@@ -74,7 +70,6 @@ export const useAuthStore = defineStore('authorization', () => {
         userAuth,
         userAuthName,
         onAuthState,
-        handleSignOut,
-        checkAuth
+        handleSignOut
     }
 })

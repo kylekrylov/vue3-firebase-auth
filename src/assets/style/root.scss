@@ -20,7 +20,8 @@
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
-
+  --vt-c-main: #00bd7e;
+  --vt-c-main-1: rgba(0, 189, 126, 0.7);
 }
 
 /* semantic color variables for this project */
@@ -37,11 +38,16 @@
 
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
+  --color-text-element: var(--vt-c-text-light-1);
   --color-text-input: var(--vt-c-text-dark-1);
+  --color-text-button: var(--vt-c-black-soft);
+  --color-text-button-color: var(--vt-c-white-soft);
 
+
+  // tdo-list
   --primary: #ff9640ff;
-  --c-active: #00bd7e;
-  --c-active-glow: #00BD7EBF;
+  --c-active: var(--vt-c-main);
+  --c-active-glow: var(--vt-c-main-1);
   --personal: var(--primary);
   --light: #eee;
   --grey: #888;
@@ -51,6 +57,7 @@
   --shadow: 0 1px 3px rgb(0 0 0 / 10%);
 
   --section-gap: 160px;
+  --transition: .2s ease-in-out;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -65,7 +72,9 @@
 	--color-border-hover: var(--vt-c-divider-dark-1);
 
 	--color-heading: var(--vt-c-text-dark-1);
-	--color-text: var(--vt-c-text-dark-2);
+	--color-text: var(--vt-c-text-dark-1);
 	--color-text-input: var(--vt-c-text-light-1);
+	--color-text-button: var(--vt-c-white-soft);
+	--color-text-button-color: var(--vt-c-black-soft);
   }
 }
