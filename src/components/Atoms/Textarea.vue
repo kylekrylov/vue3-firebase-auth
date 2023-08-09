@@ -27,7 +27,7 @@ defineProps({
   },
   error: {
     type: String,
-    default: ''
+    default: 'text'
   }
 })
 const updateValue = (event) => emit('update:modelValue', event.target.value)
@@ -39,27 +39,26 @@ const updateValue = (event) => emit('update:modelValue', event.target.value)
     <label :for="name" v-if="label" class="label text t-500">
       {{ label }}
     </label>
-    <input
-      class="input"
-      :type="type"
+    <textarea
+      class="textarea"
       :name="name"
       :id="name"
       :placeholder="placeholder"
       :value="modelValue"
       @input="updateValue"
-    >
+    />
     <span class="error t-xs">
       {{ error }}
     </span>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .wrap {
   width: 100%;
 }
 
-.input {
+.textarea {
   width: 100%;
   padding: 8px 16px;
   background: var(--color-background-input);

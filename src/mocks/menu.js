@@ -3,5 +3,4 @@ const menu = [
     {title: 'List', url: '/list'},
     {title: 'UI', url: '/ui'}
 ]
-
 export default menu

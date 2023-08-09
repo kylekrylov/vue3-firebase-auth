@@ -26,13 +26,12 @@
   bottom: var(--size);
   width: var(--size);
   height: var(--size);
-  
   border-radius: 50%;
   color: var(--color-text);
   animation: flashing 2s infinite ease-in-out both;
   
   &:not(:last-child) {
-    margin-right: 4px;
+    margin-right: 2px;
   }
   
   &:nth-child(2) {

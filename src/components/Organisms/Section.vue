@@ -10,9 +10,10 @@ const props = defineProps({
 })
 
 const sectionClass = computed(() => {
-  const main = 'section';
-  const center = {[`${main}--center`]: props.center}
-  return [main, center]
+  const mainClass = 'section';
+  const modifierCenterClass = {[`${mainClass}--center`]: props.center}
+  
+  return [mainClass, modifierCenterClass]
 })
 </script>
 

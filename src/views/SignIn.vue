@@ -27,7 +27,7 @@ message:"${error.message}"
     })
 }
 
-const singInWithGoogle = () => {
+const signInWithGoogle = () => {
   const provider = new GoogleAuthProvider()
   signInWithPopup(getAuth(), provider)
     .then((result) => {
@@ -67,7 +67,7 @@ const singInWithGoogle = () => {
         <div class="register__buttons">
           <button
             class="register__button button button-google"
-            @click="singInWithGoogle"
+            @click="signInWithGoogle"
           >
             <AtomIconsGoogle/>
           </button>

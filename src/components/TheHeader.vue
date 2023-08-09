@@ -2,21 +2,21 @@
 import menuList from "@/mocks/menu";
 import AtomsIconsAlien from "@/components/Atoms/Icons/Alien.vue";
 
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import { useRouter } from "vue-router";
 
-const router = useRouter();
+import { useRouter } from "vue-router";
 
 import { useAuthStore } from '@/store/auth'
 import { storeToRefs } from "pinia";
 
+import { getAuth, signOut } from "firebase/auth";
+
+const router = useRouter();
+
 const authStore = useAuthStore()
 const {isLoggedIn, userAuth, userAuthName} = storeToRefs(authStore)
 const {onAuthState} = authStore
-
-import { getAuth, signOut } from "firebase/auth";
-
 const auth = getAuth();
 
 const userBody = ref(null)
@@ -37,17 +37,14 @@ const filteredMenu = computed(() => {
 
 const getFirstLetters = (str) => {
   const words = str.trim().split(/[^a-zA-Zа-яА-Я]+/).filter(Boolean);
-  const firstLetters = words.map(word => word.charAt(0));
   
-  return firstLetters;
+  return words.map(word => word.charAt(0));
 }
 
 const altUserImage = computed(() => {
   if (!userAuthName.value) return
   
-  const avatarFirstLetters = getFirstLetters(userAuthName.value).join('').toUpperCase()
-  
-  return avatarFirstLetters
+  return getFirstLetters(userAuthName.value).join('').toUpperCase()
 })
 
 const handleSignOut = () => {
@@ -63,6 +60,39 @@ const handleSignOut = () => {
       onAuthState()
     })
 }
+
+
+const test = [
+  {
+    count: 1,
+    name: 'a',
+    children: [
+      {
+        count: 2,
+        name: 'a'
+      },
+      {
+        count: '4',
+        name: 'b',
+        children: [
+          {
+            name: 'a',
+            count: 6
+          }
+        ]
+      }
+    ]
+  }
+];
+let counts = 0;
+function summ(arr) {
+  arr.forEach(item => {
+    if (item.name === 'a') counts += +item.count
+    if (item.children) summ(item.children)
+  })
+}
+summ(test)
+console.log(counts)
 
 
 </script>
@@ -136,9 +166,9 @@ const handleSignOut = () => {
               <li class="header-user__drop-item">
                 <RouterLink
                   class="header-user__drop-link link"
-                  to="/sing-in"
+                  to="/sign-in"
                 >
-                  Sing In
+                  Sign In
                 </RouterLink>
               </li>
             </template>

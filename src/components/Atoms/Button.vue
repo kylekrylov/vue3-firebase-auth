@@ -6,9 +6,9 @@ const props = defineProps({
   colorBtn: {
     type: String,
     validator(value) {
-      return ['basic', 'secondary', 'tertiary'].indexOf(value) !== -1;
+      return ['primary', 'fill'].indexOf(value) !== -1;
     },
-    default: 'basic'
+    default: 'primary'
   },
   isDisabled: {
     type: Boolean,
@@ -24,9 +24,14 @@ const props = defineProps({
   }
 })
 
+const emit = defineEmits(['click'])
+const clickButton = () => {
+  emit('click')
+}
 
 const mainClass = computed(() => {
   const button = 'button'
+  
   const modification = {
     [`${button}--${props.colorBtn}`]: props.colorBtn,
     [`${button}--disabled`]: props.isDisabled,
@@ -42,6 +47,7 @@ const mainClass = computed(() => {
   <button
     :class="mainClass"
     :disabled="props.isDisabled"
+    @click="clickButton"
   >
     <slot/>
     <Loader v-if="loading"/>
@@ -56,6 +62,8 @@ const mainClass = computed(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 42px;
+  min-height: 42px;
   padding: 12px 16px;
   background: inherit;
   border: none;
@@ -63,11 +71,11 @@ const mainClass = computed(() => {
   cursor: pointer;
   color: var(--color-text-button);
   font-size: inherit;
-  font-weight: inherit;
+  font-weight: 600;
   transition: background var(--transition),
   color var(--transition);
   
-  &--basic {
+  &--primary {
     --border: var(--vt-c-main);
     --border-hover: var(--vt-c-main-1);
     
@@ -84,7 +92,7 @@ const mainClass = computed(() => {
     }
   }
   
-  &--secondary {
+  &--fill {
     background: var(--vt-c-main);
     color: var(--color-text-button-color);
     
@@ -101,7 +109,7 @@ const mainClass = computed(() => {
   }
   
   &--round {
-    --radius: 26px;
+    --radius: 32px;
   }
   
   &:disabled,

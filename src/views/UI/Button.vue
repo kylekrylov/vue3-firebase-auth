@@ -2,6 +2,19 @@
 
 import Section from "@/components/Organisms/Section.vue";
 import Button from "@/components/Atoms/Button.vue";
+import { ref } from "vue";
+
+const loadButton = ref(false)
+
+const eventClickButton = (text) => {
+  
+  console.log(`click ${text}`)
+  loadButton.value = true
+  
+  setTimeout(() => {
+    loadButton.value = false
+  }, 5000)
+}
 
 </script>
 
@@ -19,36 +32,45 @@ import Button from "@/components/Atoms/Button.vue";
       <Button is-round>
         Round
       </Button>
-      <Button loading>
-        Loading
+      <Button
+        :loading="loadButton"
+        @click="eventClickButton('Loading')"
+      >
+        Click!
       </Button>
       <Button disabled>
         Disabled
       </Button>
     </div>
+  </Section>
+    <Section>
+      <div class="header">
+        <h2 class="title2">
+          Buttons fill
+        </h2>
+      </div>
     <div class="buttons">
-      <Button
-        color-btn="secondary"
-      >
-        Secondary
+      <Button color-btn="fill">
+        Fill Buttons
       </Button>
       <Button
-        color-btn="secondary"
+        color-btn="fill"
         is-round
       >
-        Secondary
+        Round
       </Button>
       <Button
-        color-btn="secondary"
+        color-btn="fill"
         loading
+        @click="eventClickButton('Fill loading')"
       >
-        Secondary
+        Loading
       </Button>
       <Button
-        color-btn="secondary"
+        color-btn="fill"
         disabled
       >
-        Secondary
+        Disabled
       </Button>
     </div>
   </Section>
